@@ -109,3 +109,48 @@ func TransferRateResponse() []byte {
 }
 	`)
 }
+
+// InitiateMobileMoneyFrancoResponse is a dummy response for initiating a mobile money franco payment
+func InitiateMobileMoneyFrancoResponse() string {
+	return `
+	{
+  "status": "success",
+  "message": "Charge initiated",
+  "data": {
+    "id": 1191267,
+    "tx_ref": "MC-158523s09v5050e8",
+    "flw_ref": "FLW714021585320891879",
+    "order_id": "USS_URG_893982923s2323",
+    "device_fingerprint": "62wd23423rq324323qew1",
+    "amount": 10000,
+    "charged_amount": 1500,
+    "app_fee": 1703,
+    "merchant_fee": 0,
+    "auth_model": "AUTH",
+    "currency": "XAF",
+    "ip": "154.123.220.1",
+    "narration": "John Madakin",
+    "status": "pending",
+    "payment_type": "mobilemoneysn",
+    "fraud_status": "ok",
+    "charge_type": "normal",
+    "created_at": "2020-03-27T14:54:50.000Z",
+    "account_id": 73362,
+    "customer": {
+      "id": 349061,
+      "phone_number": "237******20",
+      "name": "John Madakin",
+      "email": "user@flw.com",
+      "created_at": "2020-03-27T09:12:54.000Z"
+    },
+    "processor_response": "Transaction in progress"
+  },
+  "meta": {
+    "authorization": {
+      "mode": "redirecturl",
+      "redirect_url": "http://test.com/example"
+    }
+  }
+}
+  `
+}
