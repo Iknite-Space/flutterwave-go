@@ -30,3 +30,23 @@ func (service *paymentsService) GetPaymentLink(ctx context.Context, payload *Get
 
 	return &data, response, nil
 }
+
+func (service *paymentsService) InitiateMobileMoneyFranco(ctx context.Context,
+	payload *InitiateMobileMoneyFrancoRequest) (*InitiateMobileMoneyFrancoResponse, *Response, error) {
+	request, err := service.client.newRequest(ctx, http.MethodPost, "/v3/charges?type=mobile_money_franco'", payload)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	response, err := service.client.do(request)
+	if err != nil {
+		return nil, response, err
+	}
+
+	var responsePayload InitiateMobileMoneyFrancoResponse
+	if err = json.Unmarshal(*response.Body, &responsePayload); err != nil {
+		return nil, response, err
+	}
+
+	return &responsePayload, response, nil
+}
