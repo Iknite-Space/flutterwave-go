@@ -33,7 +33,7 @@ func (service *paymentsService) GetPaymentLink(ctx context.Context, payload *Get
 
 func (service *paymentsService) InitiateMobileMoneyFranco(ctx context.Context,
 	payload *InitiateMobileMoneyFrancoRequest) (*InitiateMobileMoneyFrancoResponse, *Response, error) {
-	request, err := service.client.newRequest(ctx, http.MethodPost, "/v3/charges?type=mobile_money_franco'", payload)
+	request, err := service.client.newRequest(ctx, http.MethodPost, "/v3/charges?type=mobile_money_franco", payload)
 	if err != nil {
 		return nil, nil, err
 	}

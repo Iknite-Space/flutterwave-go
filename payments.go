@@ -37,7 +37,7 @@ type GetPaymentLinkResponse struct {
 type InitiateMobileMoneyFrancoRequest struct {
 	// Amount is the amount to be charged it is passed as - ('amount':'100') (required).
 	// // N.B. Amount should not be less than 100."
-	Amount uint32 `json:"amount"`
+	Amount string `json:"amount"`
 
 	// Currency This is the specified currency to charge in. (expected value: XAF or XOF) (required).
 	Currency string `json:"currency"`
