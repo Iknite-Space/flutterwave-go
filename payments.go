@@ -1,5 +1,7 @@
 package flutterwave
 
+import "encoding/json"
+
 // GetPaymentLinkRequest is data needed to create a payment link
 type GetPaymentLinkRequest struct {
 	TransactionReference string                       `json:"tx_ref"`
@@ -74,25 +76,25 @@ type InitiateMobileMoneyFrancoResponse struct {
 	Status  string `json:"status"`  // Status of the charge request
 	Message string `json:"message"` // Message related to the charge request
 	Data    struct {
-		ID                int    `json:"id"`
-		TxRef             string `json:"tx_ref"`
-		FlwRef            string `json:"flw_ref"`
-		OrderID           string `json:"order_id"`
-		DeviceFingerprint string `json:"device_fingerprint"`
-		Amount            uint32 `json:"amount"`
-		ChargedAmount     uint32 `json:"charged_amount"`
-		AppFee            uint32 `json:"app_fee"`
-		MerchantFee       int    `json:"merchant_fee"`
-		AuthModel         string `json:"auth_model"`
-		Currency          string `json:"currency"`
-		IP                string `json:"ip"`
-		Narration         string `json:"narration"`
-		Status            string `json:"status"`
-		PaymentType       string `json:"payment_type"`
-		FraudStatus       string `json:"fraud_status"`
-		ChargeType        string `json:"charge_type"`
-		CreatedAt         string `json:"created_at"`
-		AccountID         int    `json:"account_id"`
+		ID                int         `json:"id"`
+		TxRef             string      `json:"tx_ref"`
+		FlwRef            string      `json:"flw_ref"`
+		OrderID           string      `json:"order_id"`
+		DeviceFingerprint string      `json:"device_fingerprint"`
+		Amount            json.Number `json:"amount"`
+		ChargedAmount     json.Number `json:"charged_amount"`
+		AppFee            json.Number `json:"app_fee"`
+		MerchantFee       json.Number `json:"merchant_fee"`
+		AuthModel         string      `json:"auth_model"`
+		Currency          string      `json:"currency"`
+		IP                string      `json:"ip"`
+		Narration         string      `json:"narration"`
+		Status            string      `json:"status"`
+		PaymentType       string      `json:"payment_type"`
+		FraudStatus       string      `json:"fraud_status"`
+		ChargeType        string      `json:"charge_type"`
+		CreatedAt         string      `json:"created_at"`
+		AccountID         int         `json:"account_id"`
 		Customer          struct {
 			ID          int    `json:"id"`
 			PhoneNumber string `json:"phone_number"`

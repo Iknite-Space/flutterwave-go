@@ -24,7 +24,7 @@ func Test_paymentsService_InitiateMobileMoneyFranco_success(t *testing.T) {
 
 	// Act
 	data, response, err := client.Payments.InitiateMobileMoneyFranco(ctx, &InitiateMobileMoneyFrancoRequest{
-		Amount:         10_000,
+		Amount:         "10000",
 		Currency:       "XAF",
 		PhoneNumber:    "+237678787878",
 		Email:          "alice@example.com",
@@ -49,8 +49,8 @@ func Test_paymentsService_InitiateMobileMoneyFranco_success(t *testing.T) {
 	expectedResp.Data.FlwRef = "FLW714021585320891879"
 	expectedResp.Data.OrderID = "USS_URG_893982923s2323"
 	expectedResp.Data.DeviceFingerprint = "62wd23423rq324323qew1"
-	expectedResp.Data.Amount = 10_000
-	expectedResp.Data.ChargedAmount = 10_000
+	expectedResp.Data.Amount = "10000"
+	expectedResp.Data.ChargedAmount = "10_000"
 
 	assert.Equal(t, expectedResp.Status, data.Status)
 	assert.Equal(t, expectedResp.Message, data.Message)
@@ -79,7 +79,7 @@ func Test_paymentsService_InitiateMobileMoneyFranco_BadRequest(t *testing.T) {
 
 	// Act
 	_, response, err := client.Payments.InitiateMobileMoneyFranco(ctx, &InitiateMobileMoneyFrancoRequest{
-		Amount:         10_000,
+		Amount:         "10000",
 		Currency:       "XAF",
 		PhoneNumber:    "+237678787878",
 		Email:          "alice@example.com",
