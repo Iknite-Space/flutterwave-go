@@ -24,9 +24,9 @@ func (service *transfersService) Rate(ctx context.Context, amount int, destinati
 
 	// Adding the parameters
 	requestWithParams := service.client.addURLParams(request, map[string]string{
-		"amount": strconv.Itoa(amount),
+		"amount":               strconv.Itoa(amount),
 		"destination_currency": destination_currency,
-		"source_currency": source_currency,
+		"source_currency":      source_currency,
 	})
 
 	response, err := service.client.do(requestWithParams)
@@ -41,4 +41,25 @@ func (service *transfersService) Rate(ctx context.Context, amount int, destinati
 
 	return &data, response, nil
 
+}
+
+func (service *transfersService) CreateTransfer(ctx context.Context, req CreateTransferRequest) (*CreateTransferResponse, *Response, error) {
+	uri := "/v3/transfers"
+
+	request, err := service.client.newRequest(ctx, http.MethodPost, uri, req)
+	if err != nil {
+		return nil, nil, fmt.Errorf("%w: %v", ErrCouldNotConstructNewRequest, err)
+	}
+
+	response, err := service.client.do(request)
+	if err != nil {
+		return nil, response, fmt.Errorf("%w: %v", ErrRequestFailure, err)
+	}
+
+	var data CreateTransferResponse
+	if err = json.Unmarshal(*response.Body, &data); err != nil {
+		return nil, response, fmt.Errorf("%w: %v", ErrUnmarshalFailure, err)
+	}
+
+	return &data, response, nil
 }
