@@ -13,8 +13,8 @@ import (
 // Pre-defined error messages to be shared across services.
 var (
 	ErrCouldNotConstructNewRequest = errors.New("could not construct new request")
-	ErrRequestFailure  = errors.New("request failed")
-	ErrUnmarshalFailure = errors.New("failed to unmarshal response")
+	ErrRequestFailure              = errors.New("request failed")
+	ErrUnmarshalFailure            = errors.New("failed to unmarshal response")
 )
 
 type service struct {
@@ -30,9 +30,10 @@ type Client struct {
 	baseURL    string
 
 	Bills        *billsService
+	Chargebacks  *chargebacksService
 	Payments     *paymentsService
 	Transactions *transactionsService
-	Transfers *transfersService
+	Transfers    *transfersService
 }
 
 // New creates and returns a new flutterwave.Client from a slice of flutterwave.ClientOption.
