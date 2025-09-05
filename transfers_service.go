@@ -13,23 +13,33 @@ type transfersService service
 
 // Estimate the Transfer Rate of a transaction
 //
-// API Docs: https://developer.flutterwave.com/reference/check-transfer-rates
+// API Docs: https://developer.flutterwave.com/reference/transfer_rates_post
 func (service *transfersService) Rate(ctx context.Context, amount int, destination_currency, source_currency string) (*TransferRateResponse, *Response, error) {
 	uri := "/v3/transfers/rates"
 
-	request, err := service.client.newRequest(ctx, http.MethodGet, uri, nil)
+	const (
+		// Precision is used to signify how many decimal places 
+		// you want amount returned. if no precision is set, 6 will be used
+		precision = 2
+	)
+
+	body := map[string]interface{}{
+		"source": map[string]string{
+			"currency": source_currency,
+		},
+		"destination": map[string]string{
+			"currency": destination_currency,
+			"amount": strconv.Itoa(amount),
+		},
+		"precision": precision,
+	}
+
+	request, err := service.client.newRequest(ctx, http.MethodPost, uri, body)
 	if err != nil {
 		return nil, nil, fmt.Errorf("%w: %v", ErrCouldNotConstructNewRequest, err)
 	}
 
-	// Adding the parameters
-	requestWithParams := service.client.addURLParams(request, map[string]string{
-		"amount":               strconv.Itoa(amount),
-		"destination_currency": destination_currency,
-		"source_currency":      source_currency,
-	})
-
-	response, err := service.client.do(requestWithParams)
+	response, err := service.client.do(request)
 	if err != nil {
 		return nil, response, fmt.Errorf("%w: %v", ErrRequestFailure, err)
 	}
