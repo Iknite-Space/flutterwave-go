@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // transfersService is the API client for the `/v3/transfers` endpoint
@@ -57,6 +58,30 @@ func (service *transfersService) CreateTransfer(ctx context.Context, req CreateT
 	}
 
 	var data CreateTransferResponse
+	if err = json.Unmarshal(*response.Body, &data); err != nil {
+		return nil, response, fmt.Errorf("%w: %v", ErrUnmarshalFailure, err)
+	}
+
+	return &data, response, nil
+}
+
+// GetTransfer fetches the status and details of a single transfer by its ID.
+//
+// API Docs: https://developer.flutterwave.com/reference/get-a-transfer
+func (service *transfersService) GetTransfer(ctx context.Context, transferID string) (*GetTransferResponse, *Response, error) {
+	uri := fmt.Sprintf("/v3/transfers/%s", strings.TrimSpace(transferID))
+
+	request, err := service.client.newRequest(ctx, http.MethodGet, uri, nil)
+	if err != nil {
+		return nil, nil, fmt.Errorf("%w: %v", ErrCouldNotConstructNewRequest, err)
+	}
+
+	response, err := service.client.do(request)
+	if err != nil {
+		return nil, response, fmt.Errorf("%w: %v", ErrRequestFailure, err)
+	}
+
+	var data GetTransferResponse
 	if err = json.Unmarshal(*response.Body, &data); err != nil {
 		return nil, response, fmt.Errorf("%w: %v", ErrUnmarshalFailure, err)
 	}

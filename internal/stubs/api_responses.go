@@ -89,6 +89,35 @@ func TransactionRefundResponse() []byte {
 `)
 }
 
+// GetTransferResponse is a dummy response for fetching a single transfer.
+func GetTransferResponse() []byte {
+	return []byte(`
+{
+  "status": "success",
+  "message": "Transfer fetched",
+  "data": {
+    "id": 12345,
+    "account_number": "0690000040",
+    "bank_code": "044",
+    "full_name": "Flutterwave Developers",
+    "created_at": "2024-01-10T12:00:00.000Z",
+    "currency": "NGN",
+    "debit_currency": "NGN",
+    "amount": 5000,
+    "fee": 50,
+    "status": "successful",
+    "reference": "rflw-ref-12345",
+    "meta": null,
+    "narration": "Test transfer",
+    "complete_message": "Transfer was completed successfully",
+    "requires_approval": 0,
+    "is_approved": 1,
+    "bank_name": "ACCESS BANK NIGERIA"
+  }
+}
+`)
+}
+
 // TransferRatesResponse is a dummy response for fetching the tranfer rate of a given transaction.
 func TransferRateResponse() []byte {
 	return []byte(`

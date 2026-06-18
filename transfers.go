@@ -59,3 +59,31 @@ type CreateTransferResponse struct {
 		BankName         string      `json:"bank_name"`
 	} `json:"data"`
 }
+
+// TransferData holds the common fields returned for a single transfer.
+type TransferData struct {
+	ID               json.Number `json:"id"`
+	AccountNumber    string      `json:"account_number"`
+	BankCode         string      `json:"bank_code"`
+	FullName         string      `json:"full_name"`
+	CreatedAt        string      `json:"created_at"`
+	Currency         string      `json:"currency"`
+	DebitCurrency    string      `json:"debit_currency"`
+	Amount           json.Number `json:"amount"`
+	Fee              json.Number `json:"fee"`
+	Status           string      `json:"status"`
+	Reference        string      `json:"reference"`
+	Meta             interface{} `json:"meta"`
+	Narration        string      `json:"narration"`
+	CompleteMessage  string      `json:"complete_message"`
+	RequiresApproval int         `json:"requires_approval"`
+	IsApproved       int         `json:"is_approved"`
+	BankName         string      `json:"bank_name"`
+}
+
+// GetTransferResponse represents the response for fetching a single transfer.
+type GetTransferResponse struct {
+	Status  string       `json:"status"`
+	Message string       `json:"message"`
+	Data    TransferData `json:"data"`
+}

@@ -127,3 +127,113 @@ func TestTransfersService_Rate_ErrUnmarshalFailure(t *testing.T) {
 	assert.True(t, errors.Is(err, ErrUnmarshalFailure), "Expected ErrUnmarshalFailure")
 	assert.Contains(t, err.Error(), "failed to unmarshal response")
 }
+
+func TestTransfersService_GetTransfer(t *testing.T) {
+	// Setup
+	t.Parallel()
+
+	// Arrange
+	server := helpers.MakeTestServer(http.StatusOK, string(stubs.GetTransferResponse()))
+	client := New(WithBaseURL(server.URL))
+
+	// Act
+	transfer, response, err := client.Transfers.GetTransfer(context.Background(), "12345")
+
+	// Assert
+	assert.Nil(t, err)
+	assert.NotNil(t, response)
+	assert.Equal(t, http.StatusOK, response.HTTPResponse.StatusCode)
+
+	var expectedData GetTransferResponse
+	err = json.Unmarshal(stubs.GetTransferResponse(), &expectedData)
+	assert.Nil(t, err)
+
+	assert.Equal(t, expectedData, *transfer)
+
+	// Teardown
+	server.Close()
+}
+
+func TestTransfersService_GetTransfer_Failure(t *testing.T) {
+	// Setup
+	t.Parallel()
+
+	// Arrange
+	errorResponse := `{"status": "error", "message": "Transfer not found"}`
+	server := helpers.MakeTestServer(http.StatusNotFound, errorResponse)
+	client := New(WithBaseURL(server.URL))
+
+	// Act
+	transfer, response, err := client.Transfers.GetTransfer(context.Background(), "99999")
+
+	// Assert
+	assert.NotNil(t, err)
+	assert.Nil(t, transfer)
+	assert.NotNil(t, response)
+	assert.Equal(t, http.StatusNotFound, response.HTTPResponse.StatusCode)
+
+	assert.Contains(t, err.Error(), "404")
+
+	// Teardown
+	server.Close()
+}
+
+func TestTransfersService_GetTransfer_ErrCouldNotConstructNewRequest(t *testing.T) {
+	// Setup
+	t.Parallel()
+
+	// Arrange
+	client := New(WithBaseURL("://invalid-url"))
+
+	// Act
+	transfer, response, err := client.Transfers.GetTransfer(context.Background(), "12345")
+
+	// Assert
+	assert.Nil(t, transfer)
+	assert.Nil(t, response)
+	assert.NotNil(t, err)
+	assert.True(t, errors.Is(err, ErrCouldNotConstructNewRequest), "Expected ErrCouldNotConstructNewRequest")
+	assert.Contains(t, err.Error(), "could not construct new request")
+}
+
+func TestTransfersService_GetTransfer_ErrRequestFailure(t *testing.T) {
+	// Setup
+	t.Parallel()
+
+	// Arrange
+	client := New(WithBaseURL("http://127.0.0.1:54321"))
+
+	// Act
+	transfer, response, err := client.Transfers.GetTransfer(context.Background(), "12345")
+
+	// Assert
+	assert.Nil(t, transfer)
+	assert.Nil(t, response)
+	assert.NotNil(t, err)
+	assert.True(t, errors.Is(err, ErrRequestFailure), "Expected ErrRequestFailure")
+	assert.Contains(t, err.Error(), "request failed")
+}
+
+func TestTransfersService_GetTransfer_ErrUnmarshalFailure(t *testing.T) {
+	// Setup
+	t.Parallel()
+
+	// Arrange
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{invalid-json-response}`)
+	}))
+	defer server.Close()
+
+	client := New(WithBaseURL(server.URL))
+
+	// Act
+	transfer, response, err := client.Transfers.GetTransfer(context.Background(), "12345")
+
+	// Assert
+	assert.Nil(t, transfer)
+	assert.NotNil(t, response)
+	assert.NotNil(t, err)
+	assert.True(t, errors.Is(err, ErrUnmarshalFailure), "Expected ErrUnmarshalFailure")
+	assert.Contains(t, err.Error(), "failed to unmarshal response")
+}
