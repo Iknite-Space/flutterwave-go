@@ -34,25 +34,13 @@ func TestBillsService_CreatePayment(t *testing.T) {
 
 	// Assert
 	assert.Nil(t, err)
-
-	assert.Equal(t, &BillsCreatePaymentResponse{
-		Status:  "success",
-		Message: "Bill payment successful",
-		Data: struct {
-			PhoneNumber string `json:"phone_number"`
-			Amount      int    `json:"amount"`
-			Network     string `json:"network"`
-			FlwRef      string `json:"flw_ref"`
-			TxRef       string `json:"tx_ref"`
-		}{
-			"+23490803840303",
-			500,
-			"9MOBILE",
-			"CF-FLYAPI-20200311081921359990",
-			"BPUSSD1583957963415840",
-		},
-	}, data)
-
+	assert.Equal(t, "success", data.Status)
+	assert.Equal(t, "Bill payment successful", data.Message)
+	assert.Equal(t, "+23490803840303", data.Data.PhoneNumber)
+	assert.Equal(t, "500", data.Data.Amount.String())
+	assert.Equal(t, "9MOBILE", data.Data.Network)
+	assert.Equal(t, "CF-FLYAPI-20200311081921359990", data.Data.FlwRef)
+	assert.Equal(t, "BPUSSD1583957963415840", data.Data.TxRef)
 	assert.Equal(t, http.StatusOK, response.HTTPResponse.StatusCode)
 	assert.True(t, data.IsSuccessfull())
 
@@ -73,37 +61,17 @@ func TestBillsService_Validate(t *testing.T) {
 
 	// Assert
 	assert.Nil(t, err)
-
-	assert.Equal(t, &BillsValidateResponse{
-		Status:  "success",
-		Message: "Item validated successfully",
-		Data: struct {
-			ResponseCode    string      `json:"response_code"`
-			Address         interface{} `json:"address"`
-			ResponseMessage string      `json:"response_message"`
-			Name            string      `json:"name"`
-			BillerCode      string      `json:"biller_code"`
-			Customer        string      `json:"customer"`
-			ProductCode     string      `json:"product_code"`
-			Email           interface{} `json:"email"`
-			Fee             int         `json:"fee"`
-			Maximum         int         `json:"maximum"`
-			Minimum         int         `json:"minimum"`
-		}{
-			"00",
-			nil,
-			"Successful",
-			"MTN",
-			"BIL099",
-			"08038291822",
-			"AT099",
-			nil,
-			100,
-			0,
-			0,
-		},
-	}, data)
-
+	assert.Equal(t, "success", data.Status)
+	assert.Equal(t, "Item validated successfully", data.Message)
+	assert.Equal(t, "00", data.Data.ResponseCode)
+	assert.Equal(t, "Successful", data.Data.ResponseMessage)
+	assert.Equal(t, "MTN", data.Data.Name)
+	assert.Equal(t, "BIL099", data.Data.BillerCode)
+	assert.Equal(t, "08038291822", data.Data.Customer)
+	assert.Equal(t, "AT099", data.Data.ProductCode)
+	assert.Equal(t, "100", data.Data.Fee.String())
+	assert.Equal(t, "0", data.Data.Maximum.String())
+	assert.Equal(t, "0", data.Data.Minimum.String())
 	assert.Equal(t, http.StatusOK, response.HTTPResponse.StatusCode)
 	assert.True(t, data.IsSuccessfull())
 
