@@ -1,29 +1,34 @@
 package flutterwave
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
 
-// TransactionResponse is data returned when querying a transaction
+// TransactionResponse is data returned when querying a transaction.
+// Amount fields use json.Number so decimal currencies (e.g. 34.33 GBP)
+// decode successfully; Flutterwave returns both integers and decimals.
 type TransactionResponse struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
 	Data    struct {
-		ID                int64     `json:"id"`
-		TxRef             string    `json:"tx_ref"`
-		FlwRef            string    `json:"flw_ref"`
-		DeviceFingerprint string    `json:"device_fingerprint"`
-		Amount            int       `json:"amount"`
-		Currency          string    `json:"currency"`
-		ChargedAmount     int       `json:"charged_amount"`
-		AppFee            float64   `json:"app_fee"`
-		MerchantFee       int       `json:"merchant_fee"`
-		ProcessorResponse string    `json:"processor_response"`
-		AuthModel         string    `json:"auth_model"`
-		IP                string    `json:"ip"`
-		Narration         string    `json:"narration"`
-		Status            string    `json:"status"`
-		PaymentType       string    `json:"payment_type"`
-		CreatedAt         time.Time `json:"created_at"`
-		AccountID         int       `json:"account_id"`
+		ID                int64       `json:"id"`
+		TxRef             string      `json:"tx_ref"`
+		FlwRef            string      `json:"flw_ref"`
+		DeviceFingerprint string      `json:"device_fingerprint"`
+		Amount            json.Number `json:"amount"`
+		Currency          string      `json:"currency"`
+		ChargedAmount     json.Number `json:"charged_amount"`
+		AppFee            json.Number `json:"app_fee"`
+		MerchantFee       json.Number `json:"merchant_fee"`
+		ProcessorResponse string      `json:"processor_response"`
+		AuthModel         string      `json:"auth_model"`
+		IP                string      `json:"ip"`
+		Narration         string      `json:"narration"`
+		Status            string      `json:"status"`
+		PaymentType       string      `json:"payment_type"`
+		CreatedAt         time.Time   `json:"created_at"`
+		AccountID         int         `json:"account_id"`
 		Card              struct {
 			First6Digits string `json:"first_6digits"`
 			Last4Digits  string `json:"last_4digits"`
@@ -34,7 +39,7 @@ type TransactionResponse struct {
 			Expiry       string `json:"expiry"`
 		} `json:"card"`
 		Meta          interface{} `json:"meta"`
-		AmountSettled float64     `json:"amount_settled"`
+		AmountSettled json.Number `json:"amount_settled"`
 		Customer      struct {
 			ID          int       `json:"id"`
 			Name        string    `json:"name"`
@@ -50,14 +55,14 @@ type RefundTransactionResponse struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
 	Data    struct {
-		ID             int    `json:"id"`
-		AccountID      int    `json:"account_id"`
-		TxID           int    `json:"tx_id"`
-		FlwRef         string `json:"flw_ref"`
-		WalletID       int    `json:"wallet_id"`
-		AmountRefunded int    `json:"amount_refunded"`
-		Status         string `json:"status"`
-		Destination    string `json:"destination"`
+		ID             int         `json:"id"`
+		AccountID      int         `json:"account_id"`
+		TxID           int         `json:"tx_id"`
+		FlwRef         string      `json:"flw_ref"`
+		WalletID       int         `json:"wallet_id"`
+		AmountRefunded json.Number `json:"amount_refunded"`
+		Status         string      `json:"status"`
+		Destination    string      `json:"destination"`
 		Meta           struct {
 			Source string `json:"source"`
 		} `json:"meta"`

@@ -1,6 +1,9 @@
 package flutterwave
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
 
 // BillsCreatePaymentRequest is data needed to creat a payment
 type BillsCreatePaymentRequest struct {
@@ -18,11 +21,11 @@ type BillsCreatePaymentResponse struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
 	Data    struct {
-		PhoneNumber string `json:"phone_number"`
-		Amount      int    `json:"amount"`
-		Network     string `json:"network"`
-		FlwRef      string `json:"flw_ref"`
-		TxRef       string `json:"tx_ref"`
+		PhoneNumber string      `json:"phone_number"`
+		Amount      json.Number `json:"amount"`
+		Network     string      `json:"network"`
+		FlwRef      string      `json:"flw_ref"`
+		TxRef       string      `json:"tx_ref"`
 	} `json:"data"`
 }
 
@@ -44,9 +47,9 @@ type BillsValidateResponse struct {
 		Customer        string      `json:"customer"`
 		ProductCode     string      `json:"product_code"`
 		Email           interface{} `json:"email"`
-		Fee             int         `json:"fee"`
-		Maximum         int         `json:"maximum"`
-		Minimum         int         `json:"minimum"`
+		Fee             json.Number `json:"fee"`
+		Maximum         json.Number `json:"maximum"`
+		Minimum         json.Number `json:"minimum"`
 	} `json:"data"`
 }
 

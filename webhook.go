@@ -1,6 +1,9 @@
 package flutterwave
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
 
 const (
 	// HeaderNameVerifHash is the name of the header used to verify your webhook requests.
@@ -24,11 +27,11 @@ type PaymentEventV3 struct {
 		TxRef             string    `json:"tx_ref"`
 		FlwRef            string    `json:"flw_ref"`
 		DeviceFingerprint string    `json:"device_fingerprint"`
-		Amount            int       `json:"amount"`
-		Currency          string    `json:"currency"`
-		ChargedAmount     int       `json:"charged_amount"`
-		AppFee            float64   `json:"app_fee"`
-		MerchantFee       int       `json:"merchant_fee"`
+		Amount            json.Number `json:"amount"`
+		Currency          string      `json:"currency"`
+		ChargedAmount     json.Number `json:"charged_amount"`
+		AppFee            json.Number `json:"app_fee"`
+		MerchantFee       json.Number `json:"merchant_fee"`
 		ProcessorResponse string    `json:"processor_response"`
 		AuthModel         string    `json:"auth_model"`
 		IP                string    `json:"ip"`

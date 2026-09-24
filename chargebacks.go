@@ -1,5 +1,7 @@
 package flutterwave
 
+import "encoding/json"
+
 type ListChargebacksResp struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
@@ -15,9 +17,9 @@ type ListChargebacksResp struct {
 }
 
 type Chargeback struct {
-	ID      int    `json:"id"`
-	Amount  int    `json:"amount"`
-	FlwRef  string `json:"flw_ref"`
+	ID      int         `json:"id"`
+	Amount  json.Number `json:"amount"`
+	FlwRef  string      `json:"flw_ref"`
 	Status  string `json:"status"`
 	Stage   string `json:"stage"`
 	Comment string `json:"comment"`
